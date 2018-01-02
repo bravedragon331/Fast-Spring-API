@@ -1,0 +1,153 @@
+<head>
+    <title>HTML</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="./dist/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./dist/custom.css">
+
+</head>
+<body>
+    <div style="width:100%;text-align:center;">
+    	<div class="navbar navbar-inverse navbar-fixed-top" style="background-color: #fff; ">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand hidden-xs hidden-sm visible-md visible-lg" href="http://www.familyorbit.com/"><img src="./image/logo.png" class="img-responsive"></a>
+              <a class="navbar-brand visible-xs visible-sm hidden-md hidden-lg logostyle" href="http://www.familyorbit.com/"></a>
+            </div>
+            <div class="navbar-collapse collapse" style="background-color:#FFF;">
+              <ul class="nav navbar-nav navbar-right" style="font-family: 'Raleway', sans-serif;">
+                                 <li>
+                 	<li><a href="#" data-toggle="collapse" data-target=".navbar-collapse">Home</a></li>
+                 	<li><a href="#icloud-features" data-toggle="collapse" data-target=".navbar-collapse">Features</a></li>
+                   <li><a href="#icloud-purchase" data-toggle="collapse" data-target=".navbar-collapse">Pricing</a></li>
+                   <li><a href="http://blog.familyorbit.com">Blog</a></li>
+                   <li><a href="support.php">Support</a></li>
+                                 </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div style="margin-top:110px; color:white;">
+        
+        <div class="row d-order-header">
+            <h1  class = "text-center">Order Form</h1>            
+        </div>
+        <div class = "row d-order-body">
+            <div class = "col-sm-5 col-sm-offset-3" >
+                <form class = "form-horizontal">
+                    <div class="form-group">
+                        <label for="inputFirstName" class="col-sm-4 control-label">First Name</label>
+                        <div class="col-sm-8">
+                        <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                        </div>
+                    </div>
+                    <div class="form-group" style = "margin-top: 30px;">
+                        <label for="inputLastName" class="col-sm-4 control-label">Last Name</label>
+                        <div class="col-sm-8">
+                        <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                        </div>
+                    </div>
+                    <div class="form-group" style = "margin-top: 30px;">
+                        <label for="inputEmail" class="col-sm-4 control-label">Email</label>
+                        <div class="col-sm-8">
+                        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                        </div>
+                    </div>                    
+                    <div class="col-sm-3 btn btn-danger pull-right" style = "border-radius:10px; margin-top:10px;">Order</div>
+                </form>
+            </div>
+        </div>        
+    </div>
+    
+    <script src = "./dist/jquery.js"></script>
+    <script src = "./dist/bootstrap/js/bootstrap.min.js"></script>
+
+
+    <script
+  	    id="fsc-api"
+	    src="https://d1f8f9xcsvx3ha.cloudfront.net/sbl/0.7.3/fastspring-builder.min.js" type="text/javascript" 
+        data-storefront="familyorbit.onfastspring.com">    
+    </script>
+
+    <script>
+        var QueryString = function () {
+            // This function is anonymous, is executed immediately and 
+            // the return value is assigned to QueryString!
+            var query_string = {};
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                    // If first entry with this name
+                if (typeof query_string[pair[0]] === "undefined") {
+                query_string[pair[0]] = decodeURIComponent(pair[1]);
+                    // If second entry with this name
+                } else if (typeof query_string[pair[0]] === "string") {
+                var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+                query_string[pair[0]] = arr;
+                    // If third or later entry with this name
+                } else {
+                query_string[pair[0]].push(decodeURIComponent(pair[1]));
+                }
+            } 
+            return query_string;
+        }();
+        
+
+        $( document ).ready(function() {
+			var s = {};
+			
+            if(!QueryString.product) {
+                s = {
+                    'products' : [
+                        {
+                            'path':'family-orbit-iphone-monitoring-annual',
+                            'quantity': 1
+                        }
+                    ]
+                }
+            }
+ 
+            if(QueryString.email && QueryString.fname && QueryString.lname) {
+				s.paymentContact = {};
+				s.paymentContact.email = QueryString.email;
+				s.paymentContact.firstName = QueryString.fname;
+				s.paymentContact.lastName = QueryString.lname;
+                s.checkout = true;
+			}
+            
+			if (s) fastspring.builder.push(s);
+        });
+        
+
+        $(".btn-danger").on('click', function(){      
+            var inputEmail = $('#inputEmail').val();
+            var fN =  $('#inputFirstName').val();
+            var lN = $('#inputLastName').val();
+            if(inputEmail == '' || fN == '' || lN == ''){
+                alert("All input fields are need.")
+                return;
+            }                
+            var s = {};
+			s = {
+                    'products' : [
+                        {
+                            'path':'family-orbit-iphone-monitoring-annual',
+                            'quantity': 1
+                        }
+                    ]
+                }
+            s.paymentContact = {};
+            s.paymentContact.email = inputEmail;
+            s.paymentContact.firstName = fN;
+            s.paymentContact.lastName = lN;
+            s.checkout = true;
+
+            fastspring.builder.push(s);
+        })
+    </script>
+</body>
